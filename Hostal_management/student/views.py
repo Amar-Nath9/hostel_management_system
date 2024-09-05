@@ -40,6 +40,8 @@ def register(request):
 # Create your views here.
 def dashboard(request):
     return HttpResponse("<h1>Dash_Board_student</h1>")
+
+
 @login_required(login_url="login")
 def student_dashboard(request):
     return render(request,"student_dashboard.html")
@@ -67,6 +69,9 @@ def login_page(request):
         
     return render(request,'login_page.html')
 
+def update_user(request,id):
+    print(id)# need to update this update model
+    return redirect("/student/student_dashboard/")
 
 
 def logout_page(request):

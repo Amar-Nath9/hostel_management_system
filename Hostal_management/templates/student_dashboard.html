@@ -1,6 +1,4 @@
 
-
-
   <!doctype html>
 <html lang="en">
   <head>
@@ -83,12 +81,36 @@
                       {% if request.user.user_details.aadhaar_num %}
                       <!-- If Aadhaar number is set, show it -->
                       <p class="text-muted mb-0">{{ request.user.user_details.aadhaar_num }}</p>
-                  {% else %}
+                    {% else %}
                       <!-- If Aadhaar number is not set, show the prompt and edit button -->
-                      <p class="text-muted mb-0">Give your Aadhaar number</p>
+                        
+                          <p class="text-muted mb-0">Aadhaar number not updated ❌</p>
                      {%endif%} 
                     </div>
                   </div>
+                  {% comment %} checking is fiel or !   {% endcomment %}
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <p class="mb-0">Aadhaar File</p>
+                    </div>
+                    <div class="col-sm-9">
+                      {% if request.user.user_details.aadhaar_image %}
+                        <!-- If Aadhaar file is set, show success message with tick emoji -->
+                        <p class="text-muted mb-0">
+                          Aadhaar file successfully added ✔️
+                          
+                        </p>
+                      {% else %}
+                        <!-- If Aadhaar file is not set, show upload prompt with cross emoji -->
+                        <p class="text-muted mb-0">
+                          Aadhaar file not uploaded ❌
+                          
+                        </p>
+                      {% endif %}
+                    </div>
+                  </div>
+                  
                   <hr>
                   <div class="row">
                     <div class="col-sm-3">
