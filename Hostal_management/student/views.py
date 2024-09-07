@@ -1,10 +1,11 @@
-from django.shortcuts import render,HttpResponse,redirect
+from django.shortcuts import render,HttpResponse,redirect,get_object_or_404
 from .models import *
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login,logout
 from django.contrib import messages
 from  management.forms import UserRegistrationForm
 from django.contrib.auth.decorators import login_required
+from management.models import User_details
 
 def register(request):
     if request.method == 'POST':
@@ -69,10 +70,51 @@ def login_page(request):
         
     return render(request,'login_page.html')
 
-def update_user(request,id):
-    print(id)# need to update this update model
-    return redirect("/student/student_dashboard/")
+def update_user(request):
+    if request.method == 'POST':
+        user =request.user
 
+        user_details = get_object_or_404(User_details, user=user)
+
+        aadhaar_file = request.FILES.get("aadhaar_image")
+        profile_img = request.FILES.get("profile_pic")
+        name = request.POST.get("name")
+        collage = request.POST.get("collage_name")
+        aadhaar_num = request.POST.get("aadhaar_num")
+
+        try:
+            # Update user and user details
+            if aadhaar_num:
+                user_details.aadhaar_num = aadhaar_num
+            if name:
+                user.first_name = name
+                user.save()  # Save user's first name
+            
+            if collage:
+                user_details.collage_name = collage
+
+            # Handle files
+            if aadhaar_file:
+                user_details.aadhaar_image = aadhaar_file
+            if profile_img:
+                user_details.profile_pic = profile_img
+
+            # Save the updated details
+            user_details.save()
+            messages.success(request, 'Profile updated successfully.')
+        except Exception as e:
+            messages.error(request, f'Error updating profile: {e}')
+        
+        return redirect('update_profile')  
+       
+     
+  # need to update this update model
+    return redirect("/student/student_dashboard/")
+@login_required
+def edit_aadhaar_file(request, aadhaar_image):
+    request.user.user_details.aadhaar_image = aadhaar_image
+    request.user.user_details.save()
+    return redirect('/student/student_dashboard/')
 
 def logout_page(request):
     logout(request)

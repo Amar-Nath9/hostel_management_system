@@ -1,3 +1,4 @@
+{% load static %}
 
   <!doctype html>
 <html lang="en">
@@ -5,6 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{request.user.first_name}}</title>
+    <link rel="icon" href="{% static 'logotitle.png' %}" type="image/icon type">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   </head>
   <body>
@@ -16,7 +18,7 @@
                     <ol class="breadcrumb mb-0">
                         <li class="breadcrumb-item active" aria-current="page">User Profile</li>
                     </ol>
-                    <a href="{% url 'logout' %}" class="btn btn-success" role="button">Logout</a>
+                    <a href="{% url 'logout' %}" class="btn btn-primary" role="button">Logout</a>
                 </nav>
             </div>
         </div>
@@ -36,8 +38,61 @@
                     {% endif %}
                     <h5 class="my-3">{{ request.user.first_name }}</h5>
                     <div class="d-flex justify-content-center mb-2">
-                      
-                      <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-primary ms-1">Edit Profile</button>
+                      <!-- Button to trigger the modal -->
+                      <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                        data-bs-target="#editProfileModal">
+                        Edit Profile
+                      </button>
+      
+                      <!-- Modal -->
+                      <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              <form method="POST" action="{% url 'update_profile' %}" enctype="multipart/form-data">
+                                {% csrf_token %}
+                               
+                                <div class="mb-3">
+                                  <label for="Name" class="form-label">Name</label>
+                                  <input type="text" class="form-control" id="Name" name="name"
+                                    value="{{ request.user.first_name }}">
+                                </div>
+                                <div class="mb-3">
+                                  <label for="aadhaarNum" class="form-label">Aadhaar Number</label>
+                                  <input type="text" class="form-control" id="aadhaarNum" name="aadhaar_num"
+                                    value="{{ request.user.user_details.aadhaar_num }}" maxlength="12" minlength="12" pattern="\d{12}" >
+                                  
+                                </div>
+                                
+                                
+                                <div class="mb-3">
+                                  <label for="collageName" class="form-label">College Name</label>
+                                  <input type="text" class="form-control" id="collageName" name="collage_name"
+                                    value="{{ request.user.user_details.collage_name }}">
+                                </div>
+                                <div class="mb-3">
+                                  <label for="profilePic" class="form-label">Profile Picture</label>
+                                  <input type="file" class="form-control" id="profilePic" name="profile_pic">
+                                </div>
+                                <div class="mb-3">
+                                  <label for="aadhaar_image" class="form-label">Aadhaar File</label>
+                                  <input type="file" class="form-control" id="aadhaar_image" name="aadhaar_image" >
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                  <button type="submit" class="btn btn-primary">Save changes</button>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+      
                     </div>
                 </div>
             </div>
@@ -51,7 +106,10 @@
                       <p class="mb-0">Full Name</p>
                     </div>
                     <div class="col-sm-9">
-                      <p class="text-muted mb-0">{{request.user.first_name}}</p>
+                      <p class="text-muted mb-0">{{request.user.first_name}}
+                      
+                      </p>
+                      
                     </div>
                   </div>
                   <hr>
@@ -60,7 +118,9 @@
                       <p class="mb-0">Email</p>
                     </div>
                     <div class="col-sm-9">
-                      <p class="text-muted mb-0">{{request.user.email}}</p>
+                      <p class="text-muted mb-0">{{request.user.email}}
+
+                      </p>
                     </div>
                   </div>
                   <hr>
@@ -84,7 +144,9 @@
                     {% else %}
                       <!-- If Aadhaar number is not set, show the prompt and edit button -->
                         
-                          <p class="text-muted mb-0">Aadhaar number not updated ❌</p>
+                          <p class="text-muted mb-0">Aadhaar number not updated ❌
+                            
+                          </p>
                      {%endif%} 
                     </div>
                   </div>
@@ -98,7 +160,7 @@
                       {% if request.user.user_details.aadhaar_image %}
                         <!-- If Aadhaar file is set, show success message with tick emoji -->
                         <p class="text-muted mb-0">
-                          Aadhaar file successfully added ✔️
+                          Aadhaar file successfully added ✅
                           
                         </p>
                       {% else %}
@@ -106,6 +168,7 @@
                         <p class="text-muted mb-0">
                           Aadhaar file not uploaded ❌
                           
+                        
                         </p>
                       {% endif %}
                     </div>
@@ -117,7 +180,9 @@
                       <p class="mb-0">Collage Name</p>
                     </div>
                     <div class="col-sm-9">
-                      <p class="text-muted mb-0">{{ request.user.user_details.collage_name }}</p>
+                      <p class="text-muted mb-0">{{ request.user.user_details.collage_name }}
+                        
+                      </p>
                     </div>
                   </div>
                 </div>

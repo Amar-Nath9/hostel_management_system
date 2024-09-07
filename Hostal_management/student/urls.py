@@ -9,7 +9,7 @@ urlpatterns = [
     path('register/',views.register,name='register'),
     path('login/',views.login_page,name='login'),
     path('student_dashboard/',views.student_dashboard,name='student_dashboard'),
-    path('update_user/<id>/',views.update_user,name='update_user'),
+    path('update_user/',views.update_user,name='update_profile'),
     path('logout/',views.logout_page,name='logout'),
 
 
@@ -17,7 +17,3 @@ urlpatterns = [
 ]
 
 
-# if settings.DEBUG :
-#     urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
-
-# urlpatterns += staticfiles_urlpatterns()
