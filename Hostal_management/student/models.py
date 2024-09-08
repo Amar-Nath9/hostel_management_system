@@ -10,3 +10,5 @@ class Payment_details(models.Model):
 
     def __str__(self):
         return f'{self.user.username} - {self.amount_paid}'
+    class Meta:
+        ordering = ['-payment_date']  # Orders payment history by latest first

@@ -6,6 +6,7 @@ from django.contrib import messages
 from  management.forms import UserRegistrationForm
 from django.contrib.auth.decorators import login_required
 from management.models import User_details
+from .models import Payment_details
 
 def register(request):
     if request.method == 'POST':
@@ -119,3 +120,15 @@ def edit_aadhaar_file(request, aadhaar_image):
 def logout_page(request):
     logout(request)
     return redirect("dashboard")
+
+
+# add payment_details
+def payment_details(request):
+    if request.method == 'POST':
+        user = request.user
+        user_details = get_object_or_404(Payment_details, user=user)
+        amount_paid = request.POST.get("amount_paid")
+        payment_screenshot = request.FILES.get("payment_screenshot")
+
+        #https://chatgpt.com/c/d3e85f8b-bde3-4577-bb1f-0bd058cfcc91
+    return
