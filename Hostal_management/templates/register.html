@@ -140,5 +140,14 @@
       </div>
     </form>
   </div>
+  <script>
+    // Alert Auto-Close
+    setTimeout(function() {
+      var alert = document.querySelector('.alert');
+      if (alert) {
+        alert.style.display = 'none';
+      }
+    }, 5000); // Close after 5 seconds
+  </script>
   
   {% endblock %}

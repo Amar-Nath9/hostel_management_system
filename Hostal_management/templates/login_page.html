@@ -86,9 +86,9 @@
               {{ message }}
             </div>
           {% endfor %}
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+       {% comment %} <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
-          </button>
+          </button>  {% endcomment %}
         </div>
       {% endif %}
   
@@ -107,5 +107,14 @@
       <button type="submit" class="btn btn-primary">Login</button>
     </form>
   </div>
+  <script>
+    // Alert Auto-Close
+    setTimeout(function() {
+      var alert = document.querySelector('.alert');
+      if (alert) {
+        alert.style.display = 'none';
+      }
+    }, 3000); // Close after 5 seconds
+  </script>
   
   {% endblock content %}

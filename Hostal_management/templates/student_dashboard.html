@@ -8,13 +8,36 @@
     <title>{{request.user.first_name}}</title>
     <link rel="icon" href="{% static 'logotitle.png' %}" type="image/icon type">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+      /* Fixed position for alerts */
+      .alert-fixed {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1050;
+        min-width: 300px;
+      }
+      
+    </style>
   </head>
   <body>
+    {% if messages %}
+    <div class="alert alert-dismissible fade show" role="alert">
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+          {{ message }}
+        </div>
+      {% endfor %}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
     <section style="background-color: #eee;">
       <div class="container py-5">
         <div class="row">
             <div class="col">
+              
                 <nav aria-label="breadcrumb" class="bg-body-tertiary rounded-3 p-3 mb-4 d-flex justify-content-between align-items-center">
+                  
                     <ol class="breadcrumb mb-0">
                         <li class="breadcrumb-item active" aria-current="page">User Profile</li>
                     </ol>
@@ -201,7 +224,15 @@
           </div>
         </div>
       </section>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+   
+   <script>
+    setTimeout(function() {
+      var alert = document.querySelector('.alert');
+      if (alert) {
+        alert.style.display = 'none';
+      }
+    }, 2000); // Close after 5 seconds
+  </script>
   </body>
 </html>
