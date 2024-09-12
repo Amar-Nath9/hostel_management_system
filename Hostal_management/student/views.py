@@ -7,6 +7,10 @@ from  management.forms import UserRegistrationForm
 from django.contrib.auth.decorators import login_required
 from management.models import User_details
 from .models import Payment_details
+from django.utils import timezone
+from collections import defaultdict
+from django.db.models.functions import TruncMonth
+
 
 def register(request):
     if request.method == 'POST':
@@ -123,12 +127,42 @@ def logout_page(request):
 
 
 # add payment_details
-def payment_details(request):
+def upload_payment(request):
     if request.method == 'POST':
         user = request.user
-        user_details = get_object_or_404(Payment_details, user=user)
+        # user_details = get_object_or_404(Payment_details, user=user)
         amount_paid = request.POST.get("amount_paid")
         payment_screenshot = request.FILES.get("payment_screenshot")
+        if amount_paid and payment_screenshot:
+            payment = Payment_details(
+                user=request.user,
+                amount_paid=amount_paid,
+                payment_screenshot=payment_screenshot,
+                payment_date=timezone.now()
+            )
+            payment.save()
+            messages.success(request, 'Payment details uploaded successfully!')
+            return redirect('payment_history')  # Redirect to a page showing the payment history
+        else:
+            messages.error(request, 'Please fill out all fields and upload a screenshot.')
+    
+    return render(request, 'upload_payment.html')
 
         #https://chatgpt.com/c/d3e85f8b-bde3-4577-bb1f-0bd058cfcc91
-    return
+
+@login_required
+def payment_history(request):
+    # Get all payments for the logged-in user and group by month
+    payments = Payment_details.objects.filter(user=request.user).annotate(
+        month=TruncMonth('payment_date')  # Group by month
+    ).order_by('-payment_date')
+
+    # Group payments by month
+    payments_by_month = defaultdict(list)
+    for payment in payments:
+        month = payment.payment_date.strftime('%B %Y')  # Format the month as "Month Year" (e.g., "August 2024")
+        payments_by_month[month].append(payment)
+
+    # Pass data to the template
+    return render(request, 'payment_history.html', {'payments_by_month': payments_by_month})
+

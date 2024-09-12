@@ -1,0 +1,18 @@
+<h1>Payment History</h1>
+
+{% if payments_by_month %}
+    {% for month, payments in payments_by_month.items %}
+        <h2>{{ month }}</h2>
+        <ul>
+            {% for payment in payments %}
+                <li>
+                    Amount Paid: {{ payment.amount_paid }} on {{ payment.payment_date|date:"d M Y" }}
+                    <br>
+                    <img src="{{ payment.payment_screenshot.url }}" alt="Payment Screenshot" width="100">
+                </li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+{% else %}
+    <p>No payments found.</p>
+{% endif %}

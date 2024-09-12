@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Upload Payment Details</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="amount_paid" class="form-label">Amount Paid</label>
+            <input type="number" class="form-control" id="amount_paid" name="amount_paid" placeholder="Enter amount paid">
+        </div>
+        <div class="mb-3">
+            <label for="payment_screenshot" class="form-label">Payment Screenshot</label>
+            <input type="file" class="form-control" id="payment_screenshot" name="payment_screenshot">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+{% endblock %}
