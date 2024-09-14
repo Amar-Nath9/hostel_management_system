@@ -12,6 +12,7 @@ from collections import defaultdict
 from django.db.models.functions import TruncMonth
 
 
+#register logic 
 def register(request):
     if request.method == 'POST':
         username = request.POST.get('mobile_no')
@@ -44,15 +45,15 @@ def register(request):
 
 
 # Create your views here.
-def dashboard(request):
-    return HttpResponse("<h1>Dash_Board_student</h1>")
+# def dashboard(request):
+#     return HttpResponse("<h1>Dash_Board_student</h1>")
 
-
+# student dash board after the loin 
 @login_required(login_url="login")
 def student_dashboard(request):
     return render(request,"student_dashboard.html")
 
-
+# login_logic
 def login_page(request):
     if request.method == "POST":
         data = request.POST
@@ -75,6 +76,8 @@ def login_page(request):
         
     return render(request,'login_page.html')
 
+
+# update the user info
 def update_user(request):
     if request.method == 'POST':
         user =request.user
@@ -115,6 +118,8 @@ def update_user(request):
      
   # need to update this update model
     return redirect("/student/student_dashboard/")
+
+# update the other info. of user
 @login_required
 def edit_aadhaar_file(request, aadhaar_image):
     request.user.user_details.aadhaar_image = aadhaar_image
