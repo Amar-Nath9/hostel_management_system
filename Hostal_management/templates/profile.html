@@ -1,21 +1,14 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio - Saragada Shiva Amar Nath Reddy</title>
-    <link rel="icon" href="{% static 'logotitle.png' %}" type="image/icon type">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- External CSS -->
-   
-    <link rel="stylesheet" href={% static 'styles.css' %}>
-</head>
-<body>
 
+     {% block title %}Portfolio - Saragada Shiva Amar Nath Reddy{% endblock title %}
+   
+    <!-- External CSS -->
+    {% block css %}<link rel="stylesheet" href={% static 'styles.css' %}>{% endblock css %}
+    
+
+
+{% block content %}
     <!-- Header Section -->
     <header>
         <h1>Saragada Shiva Amar Nath Reddy</h1>
@@ -71,5 +64,4 @@
         <p>© 2024 Saragada Shiva Amar Nath Reddy | All Rights Reserved.</p>
     </footer>
 
-</body>
-</html>
+    {% endblock content %}
