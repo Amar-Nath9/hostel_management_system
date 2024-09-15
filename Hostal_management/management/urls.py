@@ -7,6 +7,7 @@ urlpatterns = [
 
     path('login_page/',views.login_page),
     # path('register/',views.register,name="register"),
+    path('amar_profile/',views.amar_profile, name='amar_profile'),
 
 
 ]

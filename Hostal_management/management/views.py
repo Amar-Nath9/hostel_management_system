@@ -18,6 +18,7 @@ def login_page(request):
     # if a==1:
     #     return redirect('/student')
     return render(request, 'home.html')
-
+def amar_profile(request):
+    return render(request,'profile.html')
 
 
