@@ -1,4 +1,5 @@
 from django.shortcuts import render, HttpResponse,redirect
+from .models import *
 
 # Create your views here.
 #this is the first viewpoint of the website
@@ -22,3 +23,13 @@ def amar_profile(request):
     return render(request,'profile.html')
 
 
+
+#################### reference the web ui https://www.infogain.com/careers/ 
+
+
+
+def all_student_details(request):
+    pass
+
+def edit_student_details(request):
+    pass

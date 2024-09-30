@@ -15,11 +15,11 @@ from django.db.models.functions import TruncMonth
 #register logic 
 def register(request):
     if request.method == 'POST':
-        username = request.POST.get('mobile_no')
+        username = request.POST.get('mobile_no') # makeing the mobile number as username
         user = User.objects.filter(username=username)
         if user.exists():
             messages.info(request,"User Already Exist! Try to Login")
-            return redirect("register")
+            return redirect("login")
 
 
         
@@ -29,8 +29,9 @@ def register(request):
         if form.is_valid():
         
             form.save()  # This will use set_password to hash the password
-            messages.success(request, 'Your account has been created successfully! You can now log in.')
-            return redirect('login')  # Redirect to the login page or any other page of your choice
+             # Custom message for waiting for admin approval
+            messages.success(request, 'Registration successful! Your account is pending approval. You will be able to log in once the admin activates your account.')
+            return redirect('login') 
         # else:
            
         #     messages.error(request, 'Please correct the errors below.')
@@ -59,7 +60,7 @@ def login_page(request):
         data = request.POST
         username = data.get('mobile_no')
         password = data.get('password')
-        print(username,password)
+        # print(username,password)  to check only
 
         if  not User.objects.filter(username=username).exists():
             messages.error(request,"Invalid Mobile No!!")
@@ -70,7 +71,7 @@ def login_page(request):
             messages.error(request,"Invalid Password!!")
             return redirect('login')
         else:
-            print("got it")
+            # print("got it") to check only
             login(request,user)
             return redirect("student_dashboard")
         

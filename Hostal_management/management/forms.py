@@ -62,7 +62,7 @@ class UserRegistrationForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super(UserRegistrationForm, self).__init__(*args, **kwargs)
         # Remove any unwanted fields if they exist
-        if 'usable_password' in self.fields:
+        if 'usable_password' in self.fields: # this is removied because default coming a radio button
             del self.fields['usable_password']
 
     def save(self, commit=True):
@@ -71,6 +71,7 @@ class UserRegistrationForm(UserCreationForm):
         user.first_name = self.cleaned_data['name']
         user.email = self.cleaned_data['email']
         user.set_password(self.cleaned_data['password1'])  # Set the password using set_password
+        user.is_active =False # need the permition from the admin to login 
 
         if commit:
             user.save()
