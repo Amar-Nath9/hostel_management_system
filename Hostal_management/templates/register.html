@@ -1,153 +1,127 @@
-{% extends "base.html" %}
-{% block title %}Register{% endblock %}
-{% block style %}
 
-<style>
-    body {
-      background-color: #F1FAEE; /* Light Grey background */
-    }
-    .container {
-      max-width: 80%;
-      margin: 40px auto;
-      padding: 20px;
-      background-color: #A8DADC; /* Soft Blue background */
-      border-radius: 20px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    h1 {
-      color: #1D3557; /* Dark Navy text */
-      font-weight: bold;
-    }
-    label {
-      color: #1D3557; /* Dark Navy text */
-      font-weight: bold;
-    }
-    .form-control {
-      border: 1px solid #A8DADC; /* Soft Blue border */
-      border-radius: 10px;
-      padding: 10px;
-    }
-    .btn-success {
-      background-color: #F4A261; /* Soft Coral background */
-      color: #FFFFFF; /* White text */
-      border: none;
-      border-radius: 20px;
-      font-weight: bold;
-    }
-    .btn-success:hover {
-      background-color: #A8DADC; /* Soft Blue background on hover */
-      color: #FFFFFF; /* White text on hover */
-    }
-    .alert {
-      border: 1px solid #F4A261; /* Soft Coral border */
-      border-radius: 10px;
-      padding: 10px;
-    }
-    .alert-danger {
-      background-color: #FFC5C5; /* Light pink background */
-      color: #1D3557; /* Dark Navy text */
-    }
-    .alert-success {
-      background-color: #C6F7D2; /* Light green background */
-      color: #1D3557; /* Dark Navy text */
-    }
-  </style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Register</title>
+    
+    <!--Icon-->
+    <link rel="icon" href="{% static 'logotitle.png' %}" type="image/icon type">
 
-{% endblock style %}
-{% block content %}
+    <!-- Font Icon -->
+    <link rel="stylesheet" href="{% static 'fonts/material-icon/css/material-design-iconic-font.min.css' %}">
 
-<div class="container mt-4">
-  <form class="col-6 mx-auto" method="POST" action="{% url 'register' %}">
-    {% csrf_token %}
-    <h1 class="text-center">Registration</h1>
-    <br>
+    <!-- Main css -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
 
-    <!-- Display Form-Specific Errors -->
-    {% if form.errors %}
-      <div class="alert alert-danger">
-        <strong>There were some errors with your form:</strong>
-        <ul>
-          {% for field in form %}
-            {% if field.errors %}
-              {% for error in field.errors %}
-                <li>{{ field.label }}: {{ error }}</li>
-              {% endfor %}
-            {% endif %}
-          {% endfor %}
-          {% for error in form.non_field_errors %}
-            <li>{{ error }}</li>
-          {% endfor %}
-        </ul>
-      </div>
-    {% endif %}
+    <div class="main">
 
-    <!-- Display Success Messages -->
-    {% if messages %}
-      {% for message in messages %}
-        {% if message.tags == "success" %}
-          <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        {% endif %}
-      {% endfor %}
-    {% endif %}
+        {% block content %}
+        <!-- Sign up form -->
+        <section class="signup">
+            <div class="container">
+                <div class="signup-content">
+                    <div class="signup-form">
+                        <h2 class="form-title">Register</h2>
 
-    <!-- Display Error Messages -->
-    {% if messages %}
-      {% for message in messages %}
-        {% if message.tags != "success" %}
-          <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        {% endif %}
-      {% endfor %}
-    {% endif %}
+                        <!-- Registration Form Starts Here -->
+                        <form method="POST" action="{% url 'register' %}" class="register-form" id="register-form">
+                            {% csrf_token %}
+                            
+                            <!-- Display Form-Specific Errors -->
+                            {% if form.errors %}
+                              <div class="alert alert-danger">
+                                <strong>There were some errors with your form:</strong>
+                                <ul>
+                                  {% for field in form %}
+                                    {% if field.errors %}
+                                      {% for error in field.errors %}
+                                        <li>{{ field.label }}: {{ error }}</li>
+                                      {% endfor %}
+                                    {% endif %}
+                                  {% endfor %}
+                                  {% for error in form.non_field_errors %}
+                                    <li>{{ error }}</li>
+                                  {% endfor %}
+                                </ul>
+                              </div>
+                            {% endif %}
 
-    <div class="mb-3">
-      <label for="{{ form.name.id_for_label }}">Name</label>
-      {{ form.name }}
+                            <!-- Display Success and Error Messages -->
+                            {% if messages %}
+                              {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                  {{ message }}
+                                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                              {% endfor %}
+                            {% endif %}
+
+                            <!-- Name Input Field -->
+                            <div class="form-group">
+                                <label for="{{ form.name.id_for_label }}"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                {{ form.name }}
+                            </div>
+
+                            <!-- Email Input Field -->
+                            <div class="form-group">
+                                <label for="{{ form.email.id_for_label }}"><i class="zmdi zmdi-email"></i></label>
+                                {{ form.email }}
+                            </div>
+
+                            <!-- Mobile Number Input Field -->
+                            <div class="form-group">
+                                <label for="{{ form.mobile_no.id_for_label }}"><i class="zmdi zmdi-phone"></i></label>
+                                {{ form.mobile_no }}
+                            </div>
+
+                            <!-- College/Industry Input Field -->
+                            <div class="form-group">
+                                <label for="{{ form.collage_name.id_for_label }}"><i class="zmdi zmdi-city"></i></label>
+                                {{ form.collage_name }}
+                            </div>
+
+                            <!-- Password Input Field -->
+                            <div class="form-group">
+                                <label for="{{ form.password1.id_for_label }}"><i class="zmdi zmdi-lock"></i></label>
+                                {{ form.password1 }}
+                            </div>
+
+                            <!-- Confirm Password Input Field -->
+                            <div class="form-group">
+                                <label for="{{ form.password2.id_for_label }}"><i class="zmdi zmdi-lock-outline"></i></label>
+                                {{ form.password2 }}
+                            </div>
+
+                            
+
+                            <!-- Submit Button -->
+                            <div class="form-group form-button">
+                                <input type="submit" name="signup" id="signup" class="form-submit" value="Register"/>
+                            </div>
+                        </form>
+
+                    </div>
+
+                    <!-- Sign-up Image Section -->
+                    <div class="signup-image">
+                        <figure><img src="{% static 'images/signup-image.jpg' %}" alt="signup image"></figure>
+                        <a href="{% url 'login' %}" class="signup-image-link">I am already a member</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        {% endblock content %}
+
     </div>
 
-    <div class="mb-3">
-      <label for="{{ form.mobile_no.id_for_label }}">Mobile Number</label>
-      {{ form.mobile_no }}
-    </div>
-
-    <div class="mb-3">
-      <label for="{{ form.email.id_for_label }}">Email</label>
-      {{ form.email }}
-    </div>
-    <div class="mb-3">
-        <label for="{{ form.collage_name.id_for_label }}">College/Industry</label>
-        {{ form.collage_name }}
-      </div>
-  
-      <div class="mb-3">
-        <label for="{{ form.password1.id_for_label }}">Password</label>
-        {{ form.password1 }}
-      </div>
-  
-      <div class="mb-3">
-        <label for="{{ form.password2.id_for_label }}">Confirm Password</label>
-        {{ form.password2 }}
-      </div>
-  
-      <div class="text-center">
-        <p>Already have an account? <a href="{% url 'login' %}">login</a></p>
-        <button type="submit" class="btn btn-success btn-block">Register</button>
-      </div>
-    </form>
-  </div>
-  <script>
-    // Alert Auto-Close
-    setTimeout(function() {
-      var alert = document.querySelector('.alert');
-      if (alert) {
-        alert.style.display = 'none';
-      }
-    }, 5000); // Close after 5 seconds
-  </script>
-  
-  {% endblock %}
+    <!-- JS -->
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

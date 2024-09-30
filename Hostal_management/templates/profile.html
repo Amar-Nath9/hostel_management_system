@@ -1,30 +1,30 @@
 {% extends "base.html" %}
 {% load static %}
 
-     {% block title %}Portfolio - Saragada Shiva Amar Nath Reddy{% endblock title %}
-   
-    <!-- External CSS -->
-    {% block css %}<link rel="stylesheet" href={% static 'styles.css' %}>{% endblock css %}
-    
+{% block title %}Portfolio - Saragada Shiva Amar Nath Reddy{% endblock title %}
 
+{% block style %}
+<!-- External CSS -->
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+{% endblock style %}
 
 {% block content %}
     <!-- Header Section -->
-    <header>
+    <header class="text-center text-white">
         <h1>Saragada Shiva Amar Nath Reddy</h1>
         <p>Software Developer | Data Analyst</p>
-        <p>Email: <a href="mailto:shivaamarnath9@gmail.com"><i class="fas fa-envelope"></i> shivaamarnath9@gmail.com</a></p>
+        <p>Email: <a href="mailto:shivaamarnath9@gmail.com" style="color: white;"><i class="fas fa-envelope"></i> shivaamarnath9@gmail.com</a></p>
         <p>Phone: <i class="fas fa-phone"></i> +91 9347744891</p>
     </header>
 
     <!-- About Me Section -->
-    <section id="about">
+    <section id="about" class="container my-4">
         <h2><i class="fas fa-user"></i> About Me</h2>
         <p>I am an aspiring software developer with a strong background in programming and problem-solving. Currently pursuing MCA at Sri Venkateswara College of Engineering and Technology, I am passionate about learning and applying new technologies. I have completed internships in Python Development and have a solid understanding of web development, data analysis, and scripting. I aim to start a freelancing career and contribute to real-world projects.</p>
     </section>
 
     <!-- Skills Section -->
-    <section id="skills">
+    <section id="skills" class="container my-4">
         <h2><i class="fas fa-laptop-code"></i> Skills</h2>
         <ul>
             <li><i class="fas fa-code"></i> Programming Languages: Python, Java, SQL, HTML, CSS</li>
@@ -34,7 +34,7 @@
     </section>
 
     <!-- Projects Section -->
-    <section id="projects">
+    <section id="projects" class="container my-4">
         <h2><i class="fas fa-project-diagram"></i> Projects</h2>
         <ul>
             <li><i class="fas fa-code-branch"></i> <strong>Web Scraping with Python</strong>: Developed a Python script for scraping websites and extracting relevant data using BeautifulSoup and Requests.</li>
@@ -43,7 +43,7 @@
     </section>
 
     <!-- Education Section -->
-    <section id="education">
+    <section id="education" class="container my-4">
         <h2><i class="fas fa-graduation-cap"></i> Education</h2>
         <ul>
             <li><strong>MCA</strong> (2022–2024) – Sri Venkateswara College of Engineering and Technology</li>
@@ -52,7 +52,7 @@
     </section>
 
     <!-- Contact Section -->
-    <section id="contact">
+    <section id="contact" class="container my-4">
         <h2><i class="fas fa-address-card"></i> Contact</h2>
         <p>If you'd like to get in touch, feel free to reach out via email or phone. You can also find me on:</p>
         <p><i class="fab fa-linkedin"></i> LinkedIn: <a href="https://www.linkedin.com/in/amar-nath9" target="_blank" style="color: #0e76a8;">LinkedIn Profile</a></p>
@@ -60,8 +60,8 @@
     </section>
 
     <!-- Footer -->
-    <footer>
+    <footer class="text-center">
         <p>© 2024 Saragada Shiva Amar Nath Reddy | All Rights Reserved.</p>
     </footer>
 
-    {% endblock content %}
+{% endblock content %}

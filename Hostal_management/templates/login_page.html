@@ -1,120 +1,86 @@
 
-{% extends "base.html" %}
-{% block style %}
-<style>
-    body {
-      background-color: #F1FAEE; /* Light Grey background */
-    }
-    .container {
-      max-width: 80%;
-      margin: 40px auto;
-      padding: 20px;
-      background-color: #A8DADC; /* Soft Blue background */
-      border-radius: 20px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    h1 {
-      color: #1D3557; /* Dark Navy text */
-      font-weight: bold;
-    }
-    .form-label {
-      color: #1D3557; /* Dark Navy text */
-      font-weight: bold;
-    }
-    .form-control {
-      border: 1px solid #A8DADC; /* Soft Blue border */
-      border-radius: 10px;
-      padding: 10px;
-    }
-    .btn-primary {
-      background-color: #F4A261; /* Soft Coral background */
-      color: #FFFFFF; /* White text */
-      border: none;
-      border-radius: 20px;
-      font-weight: bold;
-    }
-    .btn-primary:hover {
-      background-color: #A8DADC; /* Soft Blue background on hover */
-      color: #FFFFFF; /* White text on hover */
-    }
-    .alert {
-      border: 1px solid #F4A261; /* Soft Coral border */
-      border-radius: 10px;
-      padding: 10px;
-    }
-    .alert-danger {
-      background-color: #FFC5C5; /* Light pink background */
-      color: #1D3557; /* Dark Navy text */
-    }
-    .alert-{{ message.tags }} {
-      background-color: #C6F7D2; /* Light green background */
-      color: #1D3557; /* Dark Navy text */
-    }
-  </style>
-  {% endblock style %}
-  {% block content %}
-  
-  <div class="container mt-5">
-    <form class="col-6 mx-auto" method="POST" action="{% url 'login' %}">
-      {% csrf_token %}
-      <h1>Login</h1><br>
+
+{% extends "register.html" %}
+{% load static %}
+{% block content %}
+<section class="sign-in">
+  <div class="container">
+    <div class="signin-content">
       
-      <!-- Display Form Errors -->
-      {% if form.errors %}
-        <div class="alert alert-danger">
-          <strong>There were some errors with your form:</strong>
-          <ul>
-            {% for field in form %}
-              {% if field.errors %}
-                {% for error in field.errors %}
-                  <li>{{ field.label }}: {{ error }}</li>
+      <!-- Sign-in Image Section -->
+      <div class="signin-image">
+        <figure><img src="{% static 'images/signin-image.jpg' %}" alt="sign in image"></figure>
+        <a href="{% url 'register' %}" class="signup-image-link">Create an account</a>
+      </div>
+
+      <!-- Sign-in Form Section -->
+      <div class="signin-form">
+        <h2 class="form-title">Login</h2>
+        
+        <!-- Form Starts Here -->
+        <form method="POST" action="{% url 'login' %}" class="register-form" id="login-form">
+          {% csrf_token %}
+          
+          <!-- Display Form Errors -->
+          {% if form.errors %}
+            <div class="alert alert-danger">
+              <strong>There were some errors with your form:</strong>
+              <ul>
+                {% for field in form %}
+                  {% if field.errors %}
+                    {% for error in field.errors %}
+                      <li>{{ field.label }}: {{ error }}</li>
+                    {% endfor %}
+                  {% endif %}
                 {% endfor %}
-              {% endif %}
-            {% endfor %}
-            {% for error in form.non_field_errors %}
-              <li>{{ error }}</li>
-            {% endfor %}
-          </ul>
-        </div>
-      {% endif %}
-  
-      <!-- Display Success and Error Messages -->
-      {% if messages %}
-        <div class="alert alert-dismissible fade show" role="alert">
-          {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}">
-              {{ message }}
+                {% for error in form.non_field_errors %}
+                  <li>{{ error }}</li>
+                {% endfor %}
+              </ul>
             </div>
-          {% endfor %}
-       {% comment %} <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>  {% endcomment %}
-        </div>
-      {% endif %}
-  
-      <div class="mb-3">
-        <label for="mobile_no" class="form-label">Mobile Number</label>
-        <input type="tel" class="form-control" id="mobile_no" name="mobile_no" minlength="10" maxlength="10" required>
-        <div id="emailHelp" class="form-text">Only 10 digits.</div>
+          {% endif %}
+
+          <!-- Success and Error Messages -->
+          {% if messages %}
+            <div class="alert alert-dismissible fade show" role="alert">
+              {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          <!-- Mobile Number Input -->
+          <div class="form-group">
+            <label for="mobile_no"><i class="zmdi zmdi-account material-icons-name"></i></label>
+            <input type="tel" name="mobile_no" id="mobile_no" placeholder="Your Mobile Number" minlength="10" maxlength="10" required/>
+          </div>
+
+          <!-- Password Input -->
+          <div class="form-group">
+            <label for="password"><i class="zmdi zmdi-lock"></i></label>
+            <input type="password" name="password" id="password" placeholder="Password" required/>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="form-group form-button">
+            <input type="submit" name="signin" id="signin" class="form-submit" value="Log in"/>
+          </div>
+        </form>
+
       </div>
-      
-      <div class="mb-3">
-        <label for="password" class="form-label">Password</label>
-        <input type="password" class="form-control" id="password" name="password" required>
-      </div>
-  
-      <p>If you don't have an account, <a href="{% url 'register' %}">Register Now</a></p>
-      <button type="submit" class="btn btn-primary">Login</button>
-    </form>
+    </div>
   </div>
-  <script>
-    // Alert Auto-Close
-    setTimeout(function() {
-      var alert = document.querySelector('.alert');
-      if (alert) {
-        alert.style.display = 'none';
-      }
-    }, 3000); // Close after 5 seconds
-  </script>
-  
-  {% endblock content %}
+</section>
+
+<script>
+  // Alert Auto-Close
+  setTimeout(function() {
+    var alert = document.querySelector('.alert');
+    if (alert) {
+      alert.style.display = 'none';
+    }
+  }, 3000); // Close after 3 seconds
+</script>
+{% endblock content %}
