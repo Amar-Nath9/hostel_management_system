@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponse,redirect
+from django.shortcuts import render, HttpResponse,redirect,get_object_or_404
 from .models import User_details,User
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login,logout
@@ -49,7 +49,9 @@ def management_login(request):
 #mangement panel
 @login_required(login_url="/management-login/")
 def management_dashboard(request):
-    return render(request,'management_panel.html')
+    quaryset = User_details.objects.all()
+    context = {"students":quaryset}
+    return render(request,'management_panel.html',context)
 
 def logout_page(request):
     logout(request)
@@ -65,8 +67,26 @@ def amar_profile(request):
 
 
 
-def all_student_details(request):
-    pass
 
-def edit_student_details(request):
+
+def update_student(request,user_id):
+    user =request.user
+
+    user_details = get_object_or_404(User_details, id=user_id)
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        mobile_num = request.POST.get('mobile')
+        email = request.POST.get('email')
+        aadhaar_num = request.POST.get('aadhaar_num')
+        college_name = request.POST.get('college_name')
+
+        if name:
+            user.first_name = name
+        if mobile_num:
+            user_details.mobile_num = mobile_num
+            user.username = mobile_num
+        if email:
+            user.email = email
+            # need to complete...
+       
     pass

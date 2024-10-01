@@ -30,3 +30,14 @@ class User_details(models.Model):
         else:
             self.payment_status = False  # Not fully paid
         self.save()
+
+
+
+# New model to track payment history
+class PaymentHistory(models.Model):
+    user_details = models.ForeignKey(User_details, on_delete=models.CASCADE, related_name='payment_history')
+    payment_date = models.DateTimeField(auto_now_add=True)  # Automatically sets the date and time of payment
+    amount = models.DecimalField(max_digits=10, decimal_places=2)  # Amount paid
+
+    def __str__(self):
+        return f"Payment of {self.amount} by {self.user_details.user.username} on {self.payment_date}"
