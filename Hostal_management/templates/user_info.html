@@ -1,0 +1,79 @@
+{% extends 'management_panel.html' %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>Update User Information</h2>
+  
+  {% if messages %}
+      <div class="alert alert-warning" role="alert">
+          {% for message in messages %}
+              {{ message }}
+          {% endfor %}
+      </div>
+  {% endif %}
+
+  <form method="POST" action="{% url 'update_student' user.id %}">
+    {% csrf_token %}
+     <!-- Download Aadhaar File Button -->
+     {% if user_details.aadhaar_image %}
+     <a href="{{ user_details.aadhaar_image.url }}" class="btn btn-info mt-3" download>Aadhaar File</a>
+ {% endif %}
+
+ <!-- Download Profile Picture Button -->
+ {% if user_details.profile_pic %}
+     <a href="{{ user_details.profile_pic.url }}" class="btn btn-info mt-3" download>Profile Picture</a>
+ {% endif %}
+
+    <!-- Name Section -->
+    <div class="mb-3">
+      <label for="name" class="form-label">Name</label>
+      <input type="text" class="form-control" id="name" name="name" value="{{ user.first_name }}">
+    </div>
+
+    <!-- Email Section -->
+    <div class="mb-3">
+      <label for="email" class="form-label">Email</label>
+      <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}">
+    </div>
+
+    <!-- Mobile Number Section -->
+    <div class="mb-3">
+      <label for="mobile" class="form-label">Mobile Number</label>
+      <input type="text" class="form-control" id="mobile" name="mobile" value="{{ user_details.mobile_no }}">
+    </div>
+
+    <!-- Aadhaar Number Section -->
+    <div class="mb-3">
+      <label for="aadhaar_num" class="form-label">Aadhaar Number</label>
+      <input type="text" class="form-control" id="aadhaar_num" name="aadhaar_num" value="{{ user_details.aadhaar_num }}">
+    </div>
+
+    <!-- College Name Section -->
+    <div class="mb-3">
+      <label for="college_name" class="form-label">College Name</label>
+      <input type="text" class="form-control" id="college_name" name="college_name" value="{{ user_details.collage_name }}">
+    </div>
+
+    <!-- Active Toggle Button -->
+    <div class="form-check form-switch mb-3">
+      <input type="checkbox" class="form-check-input" id="is_active" name="is_active" {% if user.is_active %}checked{% endif %}>
+      <label class="form-check-label" for="is_active">Is Active</label>
+    </div>
+
+    <!-- Change Password Section -->
+   
+    <div class="mb-3">
+        <label for="new-password" class="form-label">New Password</label>
+        <input type="password" class="form-control" id="new-password" name="new_password" placeholder="Enter new password">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Update</button>
+  </form>
+
+  <!-- Delete User Button -->
+  <form method="POST" action="{% url 'delete_user' user.id %}" onsubmit="return confirm('Are you sure you want to delete this user?');">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Delete User</button>
+  </form>
+</div>
+{% endblock %}

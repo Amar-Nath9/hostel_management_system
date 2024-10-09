@@ -11,8 +11,19 @@
     <h1>MANagementb panel</h1>
 
 <a href="{% url 'logout' %}" class="btn btn-primary" role="button">Logout</a> 
-
+{% if messages %}
+<div class="alert alert-warning" role="alert">
+    {% for message in messages %}
+        {{ message }}
+    {% endfor %}
+</div>
+{% endif %}
+<main>
+  {% block content %}
+  <!-- Child templates will inject content here -->
+  
 <table class="table table-hover">
+  {% csrf_token %}
     <thead>
       <tr>
         <th scope="col">S No.</th>
@@ -36,9 +47,19 @@
     </tbody>
   </table>
 
+  {% endblock %}
+</main>
 
-
-
+<script>
+  window.onscroll = function() {
+    var navbar = document.querySelector('.navbar');
+    if (window.pageYOffset > 50) {
+      navbar.classList.add('scrolled');
+    } else {
+      navbar.classList.remove('scrolled');
+    }
+  };
+</script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   </body>
