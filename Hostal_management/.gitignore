@@ -15,8 +15,10 @@ __pycache__/
 # Ignore static files
 /static/
 /media/
-
+/profile_pic/
 /staticfiles/
+/aadhar_files/
+
 
 # Ignore other temporary files
 *.log

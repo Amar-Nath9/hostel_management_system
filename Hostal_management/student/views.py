@@ -24,13 +24,20 @@ def register(request):
 
         
         form = UserRegistrationForm(request.POST)
-        
+        '''if form.is_valid():
+    form.save()
+    messages.success(request, 'Registration successful! Your account is pending approval.')
+    return redirect('login')
+else:
+    messages.error(request, 'Please correct the errors below.')
+    return render(request, 'register.html', {'form': form})
+'''
         
         if form.is_valid():
         
             form.save()  # This will use set_password to hash the password
              # Custom message for waiting for admin approval
-            messages.success(request, 'Registration successful! Your account is pending approval. You will be able to log in once the admin activates your account.')
+            messages.success(request, 'Registration successful! Your account is pending approval.')
             return redirect('login') 
         # else:
            
@@ -81,10 +88,8 @@ def login_page(request):
 # update the user info
 def update_user(request):
     if request.method == 'POST':
-        user =request.user
-
+        user = request.user
         user_details = get_object_or_404(User_details, user=user)
-
         aadhaar_file = request.FILES.get("aadhaar_image")
         profile_img = request.FILES.get("profile_pic")
         name = request.POST.get("name")
@@ -92,33 +97,27 @@ def update_user(request):
         aadhaar_num = request.POST.get("aadhaar_num")
 
         try:
-            # Update user and user details
             if aadhaar_num:
                 user_details.aadhaar_num = aadhaar_num
             if name:
                 user.first_name = name
-                user.save()  # Save user's first name
-            
+                user.save()
             if collage:
                 user_details.collage_name = collage
-
-            # Handle files
             if aadhaar_file:
                 user_details.aadhaar_image = aadhaar_file
             if profile_img:
                 user_details.profile_pic = profile_img
 
-            # Save the updated details
             user_details.save()
             messages.success(request, 'Profile updated successfully.')
         except Exception as e:
             messages.error(request, f'Error updating profile: {e}')
         
-        return redirect('update_profile')  
-       
-     
-  # need to update this update model
+        return redirect('update_profile')
+
     return redirect("/student/student_dashboard/")
+
 
 # update the other info. of user
 @login_required
