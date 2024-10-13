@@ -11,7 +11,7 @@ urlpatterns = [
     path('student_dashboard/',views.student_dashboard,name='student_dashboard'),
     path('update_user/',views.update_user,name='update_profile'),
     path('logout/',views.logout_page,name='logout'),
-    path('payment-history/', views.payment_history, name='payment_history'),  
+    # path('payment-history/', views.payment_history, name='payment_history'),  
     path('upload-payment/', views.upload_payment, name='upload_payment'),
 
 ]

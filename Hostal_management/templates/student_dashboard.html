@@ -1,238 +1,205 @@
 {% load static %}
-
-  <!doctype html>
+<!doctype html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{request.user.first_name}}</title>
+    <title>{{ request.user.first_name }}</title>
     <link rel="icon" href="{% static 'logotitle.png' %}" type="image/icon type">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
-      /* Fixed position for alerts */
-      .alert-fixed {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        z-index: 1050;
-        min-width: 300px;
+      /* Center the alert at the top */
+      .alert-center {
+          position: absolute;
+          top: 20px; /* Position from the top */
+          left: 50%; /* Center horizontally */
+          transform: translateX(-50%); /* Adjust for element width */
+          z-index: 1050;
+          min-width: 300px;
+          width: auto; /* Allows for automatic width adjustment */
       }
-      
-    </style>
-  </head>
-  <body>
+  </style>
+</head>
+<body>
     {% if messages %}
-    <div class="alert alert-dismissible fade show" role="alert">
-      {% for message in messages %}
-        <div class="alert alert-{{ message.tags }}">
-          {{ message }}
-        </div>
-      {% endfor %}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <div class="alert alert-dismissible fade show alert-center" role="alert">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     {% endif %}
+    
     <section style="background-color: #eee;">
-      <div class="container py-5">
-        <div class="row">
-            <div class="col">
-              
-                <nav aria-label="breadcrumb" class="bg-body-tertiary rounded-3 p-3 mb-4 d-flex justify-content-between align-items-center">
-                  
-                    <ol class="breadcrumb mb-0">
-                        <li class="breadcrumb-item active" aria-current="page">User Profile</li>
-                    </ol>
-                    <a href="{% url 'logout' %}" class="btn btn-primary" role="button">Logout</a>
-                </nav>
+        <div class="container py-5">
+            <div class="row">
+                <div class="col">
+                    <nav aria-label="breadcrumb" class="bg-body-tertiary rounded-3 p-3 mb-4 d-flex justify-content-between align-items-center">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item active" aria-current="page">User Profile</li>
+                        </ol>
+                        <a href="{% url 'logout' %}" class="btn btn-primary" role="button">Logout</a>
+                    </nav>
+                </div>
+            </div>
+            
+            <div class="row">
+                <!-- Profile Section -->
+                <div class="col-lg-4">
+                    <div class="card mb-4">
+                        <div class="card-body text-center">
+                            {% if request.user.user_details.profile_pic %}
+                                <img src="{{ request.user.user_details.profile_pic.url }}" alt="avatar"
+                                     class="rounded-circle img-fluid" style="width: 150px;">
+                            {% else %}
+                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
+                                     class="rounded-circle img-fluid" style="width: 150px;">
+                            {% endif %}
+                            <h5 class="my-3">{{ request.user.first_name }}</h5>
+                            <div class="d-flex justify-content-center mb-2">
+                                <!-- Button to trigger the modal -->
+                                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                                    Edit Profile
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- User Details and Payment Section -->
+                <div class="col-lg-8">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <!-- Existing User Details Section -->
+                            <div class="row">
+                                <div class="col-sm-3"><p class="mb-0">Full Name</p></div>
+                                <div class="col-sm-9"><p class="text-muted mb-0">{{ request.user.first_name }}</p></div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3"><p class="mb-0">Email</p></div>
+                                <div class="col-sm-9"><p class="text-muted mb-0">{{ request.user.email }}</p></div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3"><p class="mb-0">Phone</p></div>
+                                <div class="col-sm-9"><p class="text-muted mb-0">{{ request.user.user_details.mobile_no }}</p></div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3"><p class="mb-0">Service Type</p></div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">
+                                        {% if request.user.user_details.service_type == 'AF' %}
+                                            Accommodation & Food
+                                        {% elif request.user.user_details.service_type == 'FO' %}
+                                            Food Only
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3"><p class="mb-0">Total Amount Paid</p></div>
+                                <div class="col-sm-9"><p class="text-muted mb-0">{{ total_paid }}</p></div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3"><p class="mb-0">Remaining Balance</p></div>
+                                <div class="col-sm-9"><p class="text-muted mb-0">{{ remaining_balance }}</p></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Payment History and Form -->
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="mb-3">Payment History</h5>
+                            <ul class="list-group mb-3">
+                                {% for payment in payments %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        {{ payment.payment_date|date:"F Y" }} - Amount: {{ payment.amount_paid }}
+                                        {% if payment.amount_paid >= request.user.user_details.remaining_balance %}
+                                            <span class="badge bg-success rounded-pill">Completed ✅</span>
+                                        {% else %}
+                                            <span class="badge bg-warning rounded-pill">Partial ❌</span>
+                                        {% endif %}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                            
+                            <!-- Payment Form -->
+                            <h5 class="mb-3">Make a Payment</h5>
+                            <form method="POST" action="{% url 'upload_payment' %}" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label for="amount_paid" class="form-label">Amount to Pay</label>
+                                    <input type="number" class="form-control" id="amount_paid" name="amount_paid" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="payment_screenshot" class="form-label">Payment Screenshot</label>
+                                    <input type="file" class="form-control" id="payment_screenshot" name="payment_screenshot" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Submit Payment</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal for Editing Profile -->
+    <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{% url 'update_profile' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="name" name="name" value="{{ request.user.first_name }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="aadhaar_num" class="form-label">Aadhaar Number</label>
+                            <input type="text" class="form-control" id="aadhaar_num" name="aadhaar_num" value="{{ request.user.user_details.aadhaar_num }}" maxlength="12" minlength="12" pattern="\d{12}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="collage_name" class="form-label">College Name</label>
+                            <input type="text" class="form-control" id="collage_name" name="collage_name" value="{{ request.user.user_details.collage_name }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="profile_pic" class="form-label">Profile Picture</label>
+                            <input type="file" class="form-control" id="profile_pic" name="profile_pic">
+                        </div>
+                        <div class="mb-3">
+                            <label for="aadhaar_image" class="form-label">Aadhaar File</label>
+                            <input type="file" class="form-control" id="aadhaar_image" name="aadhaar_image">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-    
-      
-          <div class="row">
-            <div class="col-lg-4">
-              <div class="card mb-4">
-                <div class="card-body text-center">
-                    {% if request.user.user_details.profile_pic %}
-                        <img src="{{ request.user.user_details.profile_pic.url }}" alt="avatar"
-                            class="rounded-circle img-fluid" style="width: 150px;">
-                    {% else %}
-                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
-                            class="rounded-circle img-fluid" style="width: 150px;">
-                    {% endif %}
-                    <h5 class="my-3">{{ request.user.first_name }}</h5>
-                    <div class="d-flex justify-content-center mb-2">
-                      <!-- Button to trigger the modal -->
-                      <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
-                        data-bs-target="#editProfileModal">
-                        Edit Profile
-                      </button>
-      
-                      <!-- Modal -->
-                      <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
-                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                              <form method="POST" action="{% url 'update_profile' %}" enctype="multipart/form-data">
-                                {% csrf_token %}
-                               
-                                <div class="mb-3">
-                                  <label for="Name" class="form-label">Name</label>
-                                  <input type="text" class="form-control" id="Name" name="name"
-                                    value="{{ request.user.first_name }}">
-                                </div>
-                                <div class="mb-3">
-                                  <label for="aadhaarNum" class="form-label">Aadhaar Number</label>
-                                  <input type="text" class="form-control" id="aadhaarNum" name="aadhaar_num"
-                                    value="{{ request.user.user_details.aadhaar_num }}" maxlength="12" minlength="12" pattern="\d{12}" >
-                                  
-                                </div>
-                                
-                                
-                                <div class="mb-3">
-                                  <label for="collageName" class="form-label">College Name</label>
-                                  <input type="text" class="form-control" id="collageName" name="collage_name"
-                                    value="{{ request.user.user_details.collage_name }}">
-                                </div>
-                                <div class="mb-3">
-                                  <label for="profilePic" class="form-label">Profile Picture</label>
-                                  <input type="file" class="form-control" id="profilePic" name="profile_pic">
-                                </div>
-                                <div class="mb-3">
-                                  <label for="aadhaar_image" class="form-label">Aadhaar File</label>
-                                  <input type="file" class="form-control" id="aadhaar_image" name="aadhaar_image" >
-                                </div>
-                                <div class="modal-footer">
-                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                  <button type="submit" class="btn btn-primary">Save changes</button>
-                                </div>
-                              </form>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-      
-                    </div>
-                </div>
-            </div>
-             
-            </div>
-            <div class="col-lg-8">
-              <div class="card mb-4">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <p class="mb-0">Full Name</p>
-                    </div>
-                    <div class="col-sm-9">
-                      <p class="text-muted mb-0">{{request.user.first_name}}
-                      
-                      </p>
-                      
-                    </div>
-                  </div>
-                  <hr>
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <p class="mb-0">Email</p>
-                    </div>
-                    <div class="col-sm-9">
-                      <p class="text-muted mb-0">{{request.user.email}}
 
-                      </p>
-                    </div>
-                  </div>
-                  <hr>
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <p class="mb-0">Phone</p>
-                    </div>
-                    <div class="col-sm-9">
-                      <p class="text-muted mb-0">{{request.user.user_details.mobile_no}}</p>
-                    </div>
-                  </div>
-                  <hr>
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <p class="mb-0">Aadhaar Number</p>
-                    </div>
-                    <div class="col-sm-9">
-                      {% if request.user.user_details.aadhaar_num %}
-                      <!-- If Aadhaar number is set, show it -->
-                      <p class="text-muted mb-0">{{ request.user.user_details.aadhaar_num }}</p>
-                    {% else %}
-                      <!-- If Aadhaar number is not set, show the prompt and edit button -->
-                        
-                          <p class="text-muted mb-0">Aadhaar number not updated ❌
-                            
-                          </p>
-                     {%endif%} 
-                    </div>
-                  </div>
-                  {% comment %} checking is fiel or !   {% endcomment %}
-                  <hr>
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <p class="mb-0">Aadhaar File</p>
-                    </div>
-                    <div class="col-sm-9">
-                      {% if request.user.user_details.aadhaar_image %}
-                        <!-- If Aadhaar file is set, show success message with tick emoji -->
-                        <p class="text-muted mb-0">
-                          Aadhaar file successfully added ✅
-                          
-                        </p>
-                      {% else %}
-                        <!-- If Aadhaar file is not set, show upload prompt with cross emoji -->
-                        <p class="text-muted mb-0">
-                          Aadhaar file not uploaded ❌
-                          
-                        
-                        </p>
-                      {% endif %}
-                    </div>
-                  </div>
-                  
-                  <hr>
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <p class="mb-0">Collage Name</p>
-                    </div>
-                    <div class="col-sm-9">
-                      <p class="text-muted mb-0">{{ request.user.user_details.collage_name }}
-                        
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="card mb-4 mb-md-0">
-                  
-                  </div>
-                </div>
-                <div class="col-md-6">
-                
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-   
-   <script>
-    setTimeout(function() {
-      var alert = document.querySelector('.alert');
-      if (alert) {
-        alert.style.display = 'none';
-      }
-    }, 2000); // Close after 5 seconds
-  </script>
-  </body>
+    <script>
+        setTimeout(function() {
+            var alert = document.querySelector('.alert');
+            if (alert) {
+                alert.style.display = 'none';
+            }
+        }, 4000); // Close after 5 seconds
+    </script>
+</body>
 </html>

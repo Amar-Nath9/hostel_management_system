@@ -6,10 +6,12 @@ from django.contrib import messages
 from  management.forms import UserRegistrationForm
 from django.contrib.auth.decorators import login_required
 from management.models import User_details
-from .models import Payment_details
+from .models import PaymentDetails
 from django.utils import timezone
 from collections import defaultdict
 from django.db.models.functions import TruncMonth
+from django.utils.timezone import now
+from django.db.models import Sum
 
 
 #register logic 
@@ -57,9 +59,39 @@ else:
 #     return HttpResponse("<h1>Dash_Board_student</h1>")
 
 # student dash board after the loin 
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404
+from django.db.models import Sum
+from management.models import User_details
+from student.models import PaymentDetails
+
 @login_required(login_url="login")
 def student_dashboard(request):
-    return render(request,"student_dashboard.html")
+    user_details = get_object_or_404(User_details, user=request.user)
+    
+    # Reset remaining balance if needed
+    user_details.reset_remaining_balance()
+    
+    # Get all payments associated with the logged-in user
+    payments = PaymentDetails.objects.filter(user=request.user)
+    
+    # Calculate total amount paid based on PaymentDetails
+    total_paid = payments.aggregate(Sum('amount_paid'))['amount_paid__sum'] or 0
+    
+    # Calculate remaining balance
+    remaining_balance = user_details.total_amount_due - total_paid
+    
+    # Update payment status based on remaining balance
+    user_details.update_payment_status()
+
+    # Context data to pass to the template
+    context = {
+        'user_details': user_details,
+        'payments': payments,
+        'total_paid': total_paid,  # Still keeping this for display purposes
+        'remaining_balance': remaining_balance,
+    }
+    return render(request, 'student_dashboard.html', context)
 
 # login_logic
 def login_page(request):
@@ -84,7 +116,7 @@ def login_page(request):
         
     return render(request,'login_page.html')
 
-
+@login_required
 # update the user info
 def update_user(request):
     if request.method == 'POST':
@@ -131,43 +163,42 @@ def logout_page(request):
     return redirect("dashboard")
 
 
-# add payment_details
+@login_required
 def upload_payment(request):
     if request.method == 'POST':
         user = request.user
-        # user_details = get_object_or_404(Payment_details, user=user)
         amount_paid = request.POST.get("amount_paid")
         payment_screenshot = request.FILES.get("payment_screenshot")
+
+        # Check if the student has already made a payment for the current month
+        current_month = now().month
+        current_year = now().year
+        existing_payment = PaymentDetails.objects.filter(
+            user=user,
+            payment_date__year=current_year,
+            payment_date__month=current_month
+        ).first()
+
+        if existing_payment:
+            messages.error(request, 'You have already made a payment for this month.')
+            return redirect('student_dashboard')
+
         if amount_paid and payment_screenshot:
-            payment = Payment_details(
-                user=request.user,
-                amount_paid=amount_paid,
+            payment = PaymentDetails(
+                user=user,
+                amount_paid=float(amount_paid),
                 payment_screenshot=payment_screenshot,
-                payment_date=timezone.now()
+                payment_date=now()
             )
             payment.save()
+
+            # Update payment status in User_details
+            user_details = get_object_or_404(User_details, user=user)
+            user_details.update_payment_status()  # Update payment status based on new payments
+
             messages.success(request, 'Payment details uploaded successfully!')
-            return redirect('payment_history')  # Redirect to a page showing the payment history
+            return redirect('student_dashboard')
         else:
             messages.error(request, 'Please fill out all fields and upload a screenshot.')
-    
-    return render(request, 'upload_payment.html')
 
-        #https://chatgpt.com/c/d3e85f8b-bde3-4577-bb1f-0bd058cfcc91
-
-@login_required
-def payment_history(request):
-    # Get all payments for the logged-in user and group by month
-    payments = Payment_details.objects.filter(user=request.user).annotate(
-        month=TruncMonth('payment_date')  # Group by month
-    ).order_by('-payment_date')
-
-    # Group payments by month
-    payments_by_month = defaultdict(list)
-    for payment in payments:
-        month = payment.payment_date.strftime('%B %Y')  # Format the month as "Month Year" (e.g., "August 2024")
-        payments_by_month[month].append(payment)
-
-    # Pass data to the template
-    return render(request, 'payment_history.html', {'payments_by_month': payments_by_month})
-
+    return redirect('student_dashboard')
