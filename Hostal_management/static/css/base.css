@@ -1,0 +1,48 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+  main {
+    padding-top: 0;
+  }
+  
+  /* Image section with cropping */
+  .image-section {
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    height: 100vh; /* Full viewport height */
+    overflow: hidden; /* Hide overflow from cropping */
+  }
+  
+  .image-section img {
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    object-fit: cover; /* Crop the image to fit */
+    object-position: center; /* Center the image to balance top and bottom cropping */
+    display: block;
+  }
+  
+  .navbar {
+    background-color: transparent !important;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    transition: background-color 0.3s ease;
+  }
+  
+  .navbar.scrolled {
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+  
+  .navbar-brand, .nav-link {
+    color: #ffffff !important;
+  }
+  
+  .nav-link:hover {
+    color: #A8DADC !important;
+  }
+  

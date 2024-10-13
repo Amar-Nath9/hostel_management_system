@@ -13,7 +13,7 @@ __pycache__/
 .env
 
 # Ignore static files
-/static/
+
 /media/
 /profile_pic/
 /staticfiles/
