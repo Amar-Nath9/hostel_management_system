@@ -1,67 +1,313 @@
-{% extends "base.html" %}
-{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <!-- font icons --> {% load static %}
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Start your development with Amar Nath.">
+    <meta name="author" content="Amar Nath">
+    <title>Developer Profile</title>
+    <link rel="stylesheet" href={% static "assets/vendors/themify-icons/css/themify-icons.css"%}>
+    <!-- Bootstrap + Steller main styles -->
+	<link rel="stylesheet" href={% static "assets/css/steller.css"%}>
+   
+</head>
+<body data-spy="scroll" data-target=".navbar" data-offset="40" id="home">
 
-{% block title %}Portfolio - Saragada Shiva Amar Nath Reddy{% endblock title %}
+    <!-- Page navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" data-spy="affix" data-offset-top="0">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'dashboard' %}"><img src="{% static 'logotitle.png' %}" alt="Reddy's Hostel Logo" ></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-{% block style %}
-<!-- External CSS -->
-<link rel="stylesheet" href="{% static 'css/styles.css' %}">
-{% endblock style %}
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="#portfolio">Portfolio</a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>          
+    </nav>
+    <!-- End of page navibation -->
 
-{% block content %}
-    <!-- Header Section -->
-    <header class="text-center text-white">
-        <h1>Saragada Shiva Amar Nath Reddy</h1>
-        <p>Software Developer | Data Analyst</p>
-        <p>Email: <a href="mailto:shivaamarnath9@gmail.com" style="color: white;"><i class="fas fa-envelope"></i> shivaamarnath9@gmail.com</a></p>
-        <p>Phone: <i class="fas fa-phone"></i> +91 9347744891</p>
+    <!-- Page Header -->
+    <header class="header" id="home">
+        <div class="container">
+            <div class="infos">
+                <h6 class="subtitle">hello,I'm</h6>
+                <h6 class="title">Amar Nath Reddy</h6>
+                <p>Software Developer</p>
+
+                <div class="buttons pt-3">
+                    <a class="btn btn-primary rounded" href="https://www.linkedin.com/in/amar-nath9" target="_blank" >HIRE ME</a>
+                    <a href="https://drive.google.com/uc?export=download&id=1rrb4zobFknkxg44mFVE7IRL_15-Y87w4" class="btn btn-primary rounded" target="_blank">DOWNLOAD CV</a>
+                </div>      
+
+                <div class="socials mt-4">
+                   
+                    <a class="social-item" href="mailto:shivaamarnath9@gmail.com"><i class="ti-google"></i></a>
+                    <a class="social-item" href="https://github.com/Amar-Nath9"><i class="ti-github"></i></a>
+                   
+                </div>
+            </div>              
+            <div class="img-holder">
+                <img src="{% static 'assets/imgs/man.svg' %}" alt="">
+            </div>
+                  
+        </div>  
+
+    
     </header>
-
-    <!-- About Me Section -->
-    <section id="about" class="container my-4">
-        <h2><i class="fas fa-user"></i> About Me</h2>
-        <p>I am an aspiring software developer with a strong background in programming and problem-solving. Currently pursuing MCA at Sri Venkateswara College of Engineering and Technology, I am passionate about learning and applying new technologies. I have completed internships in Python Development and have a solid understanding of web development, data analysis, and scripting. I aim to start a freelancing career and contribute to real-world projects.</p>
+    <!-- End of Page Header -->
+    
+    <!-- About section -->
+    <section id="about" class="section mt-3">
+        <div class="container mt-5">
+            <div class="row text-center text-md-left">
+                <div class="col-md-3">
+                    {% comment %}Amar image <img src={% static "assets/imgs/avatar.jpg" alt="" class="img-thumbnail mb-4" %}> {% endcomment %}
+                </div>
+                <div class="pl-md-4 col-md-9">
+                    <h6 class="title">Saragada Shiva Amar Nath Reddy</h6>
+                    <p class="subtitle">Software Developer</p>
+                    <p>An enthusiastic software developer with a strong background in coding and problem-solving, I have a passion for creating efficient and impactful solutions. Having completed an MCA in 2024 and a B.Sc. in Computer Science, I am proficient in multiple programming languages, including Java, Python, SQL, HTML, and CSS. My expertise extends to frameworks and tools such as Flask, Django, MySQL, and the Django REST Framework. I also have hands-on experience in data analysis using Pandas and NumPy.​</p>
+                    <p> My development journey has led to successful projects like a Django-based Hostel Management System and a sentiment analysis application using machine learning models. I’ve interned as a Python developer, working on backend development, API creation, and web application maintenance.
+                        
+                        With a keen interest in learning and growth, I’m always looking for opportunities to apply my skills in real-world challenges, collaborate with teams, and explore new technologies.</p>
+                    <a href="https://drive.google.com/uc?export=download&id=1rrb4zobFknkxg44mFVE7IRL_15-Y87w4" class="btn btn-primary rounded mt-3" target="_blank">DOWNLOAD CV</a>
+        
+                </div>
+            </div>
+        </div>
     </section>
 
-    <!-- Skills Section -->
-    <section id="skills" class="container my-4">
-        <h2><i class="fas fa-laptop-code"></i> Skills</h2>
-        <ul>
-            <li><i class="fas fa-code"></i> Programming Languages: Python, Java, SQL, HTML, CSS</li>
-            <li><i class="fas fa-tools"></i> Technologies & Tools: Flask, Django, MySQL, Git, Linux, GitHub, VS Code</li>
-            <li><i class="fas fa-chart-line"></i> Data Analysis: Pandas, Numpy</li>
-        </ul>
-    </section>
+    
 
-    <!-- Projects Section -->
-    <section id="projects" class="container my-4">
-        <h2><i class="fas fa-project-diagram"></i> Projects</h2>
-        <ul>
-            <li><i class="fas fa-code-branch"></i> <strong>Web Scraping with Python</strong>: Developed a Python script for scraping websites and extracting relevant data using BeautifulSoup and Requests.</li>
-            <li><i class="fas fa-chart-bar"></i> <strong>COVID-19 Data Analysis</strong>: Analyzed and visualized COVID-19 data using Pandas and Matplotlib for insights and trends.</li>
-        </ul>
+    <!-- Skills section -->
+    <section class="section">
+        <div class="container text-center">
+            <h6 class="subtitle">Skills</h6>
+            <h6 class="section-title mb-4">Why Choose me</h6>
+            <p class="mb-5 pb-4">With a solid academic background and hands-on experience in software development, I bring a blend of technical proficiency and creative problem-solving to the table. My passion for learning drives me to stay up-to-date with the latest technologies, ensuring that I can deliver efficient, scalable solutions. I have a track record of working on real-world projects like web applications and machine learning models, demonstrating my ability to apply my skills effectively.<br>I am committed to delivering high-quality work, and I’m always excited to collaborate with others to achieve great results.</p>
+            <div class="row text-left">
+                <div class="col-sm-6">
+                    <h6 class="mb-3">Python</h6>
+                    <div class="progress">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: 95%;" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"><span>95%</span></div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <h6 class="mb-3">Java</h6>
+                    <div class="progress">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: 90%;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"><span>90%</span></div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <h6 class="mb-3">HTML/CSS</h6>
+                    <div class="progress">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: 85%;" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"><span>85%</span></div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <h6 class="mb-3">Django/Flask</h6>
+                    <div class="progress">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: 88%;" aria-valuenow="88" aria-valuemin="0" aria-valuemax="100"><span>88%</span></div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <h6 class="mb-3">SQL/MySQL</h6>
+                    <div class="progress">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: 80%;" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"><span>80%</span></div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <h6 class="mb-3">Data Analysis (Pandas, NumPy)</h6>
+                    <div class="progress">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"><span>75%</span></div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
     </section>
+    <!-- End of Skills sections -->
 
-    <!-- Education Section -->
-    <section id="education" class="container my-4">
-        <h2><i class="fas fa-graduation-cap"></i> Education</h2>
-        <ul>
-            <li><strong>MCA</strong> (2022–2024) – Sri Venkateswara College of Engineering and Technology</li>
-            <li><strong>B.Sc. in Computer Science</strong> (2019–2022) – Gayatri Vidya Parishad College, CGPA: 8.67</li>
-        </ul>
+    <!-- Portfolio section -->
+    <section id="portfolio" class="section">
+        <div class="container text-center">
+            <h6 class="subtitle">Portfolio</h6>
+            <h6 class="section-title mb-4">Check My Wonderful Works</h6>
+            <p class="mb-5 pb-4">Here are some of the projects I’ve worked on, showcasing my skills in web development and data analysis.</p>
+    
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="img-wrapper">
+                        <img src={% static "assets/imgs/folio-1.jpg" alt="Hostel Management System" %}>
+                        <div class="overlay">
+                            <div class="overlay-infos">
+                                <h5>Hostel Management System</h5>
+                                <a href="https://github.com/Amar-Nath9/hostel_management_system" target="_blank"><i class="ti-link"></i></a>
+                            </div>  
+                        </div>
+                    </div>
+                    <div class="img-wrapper">
+                        <img src={% static "assets/imgs/folio-2.jpg" alt="LifeLine Sentiment Analysis"%}>
+                        <div class="overlay">
+                            <div class="overlay-infos">
+                                <h5>LifeLine Sentiment Analysis</h5>
+                                <a href="https://github.com/Amar-Nath9/LifeLine-Sentiment-Analysis" target="_blank"><i class="ti-link"></i></a>
+                            </div>                              
+                        </div>
+                    </div>                  
+                </div>
+                <div class="col-sm-4">
+                    <div class="img-wrapper">
+                        <img src={% static "assets/imgs/folio-3.jpg" alt="Web Scraping with Python" %}>
+                        <div class="overlay">
+                            <div class="overlay-infos">
+                                <h5>Web Scraping with Python</h5>
+                                <a href="https://github.com/Amar-Nath9/Web-Scraping-Python" target="_blank"><i class="ti-link"></i></a>
+                            </div>  
+                        </div>
+                    </div>
+                    <div class="img-wrapper">
+                        <img src={% static "assets/imgs/folio-4.jpg" alt="COVID-19 Data Analysis"  %}>
+                        <div class="overlay">
+                            <div class="overlay-infos">
+                                <h5>COVID-19 Data Analysis</h5>
+                                <a href="https://github.com/Amar-Nath9/COVID-19-Data-Analysis" target="_blank"><i class="ti-link"></i></a>
+                            </div>                              
+                        </div>
+                    </div>                  
+                </div>
+                <div class="col-sm-4">
+                    <div class="img-wrapper">
+                        <img src={% static "assets/imgs/folio-5.jpg" alt="Mini Projects with Python" %}>
+                        <div class="overlay">
+                            <div class="overlay-infos">
+                                <h5>Mini Projects with Python</h5>
+                                <a href="https://github.com/Amar-Nath9/Mini-Python-Projects" target="_blank"><i class="ti-link"></i></a>
+                            </div>  
+                        </div>
+                    </div>
+                    <div class="img-wrapper">
+                        <img src={% static "assets/imgs/folio-6.jpg" alt="Flask Web Application" %}>
+                        <div class="overlay">
+                            <div class="overlay-infos">
+                                <h5>Flask Web Application</h5>
+                                <a href="https://github.com/Amar-Nath9/Flask-Web-App" target="_blank"><i class="ti-link"></i></a>
+                            </div>                              
+                        </div>
+                    </div>                  
+                </div>
+            </div>
+    
+        </div>
     </section>
+    
+    <!-- End of portfolio section -->
+
+   
+
+   
+
+    <!-- Hire me section -->
+    <section class="bg-gray p-0 section">
+        <div class="container">
+            <div class="card bg-primary">
+                <div class="card-body text-light">
+                    <div class="row align-items-center">
+                        <div class="col-sm-9 text-center text-sm-left">
+                            <h5 class="mt-3">Hire Me For Your Project</h5>
+                            <p class="mb-3">Bring your ideas to life with reliable, efficient, and innovative software solutions tailored to your needs.</p>
+                        </div>
+                        <div class="col-sm-3 text-center text-sm-right">
+                            <a class="btn btn-light rounded" href="https://www.linkedin.com/in/amar-nath9" target="_blank" >HIRE ME</a>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+        </div>
+    </section>      
+    <!-- End od Hire me section. -->
 
     <!-- Contact Section -->
-    <section id="contact" class="container my-4">
-        <h2><i class="fas fa-address-card"></i> Contact</h2>
-        <p>If you'd like to get in touch, feel free to reach out via email or phone. You can also find me on:</p>
-        <p><i class="fab fa-linkedin"></i> LinkedIn: <a href="https://www.linkedin.com/in/amar-nath9" target="_blank" style="color: #0e76a8;">LinkedIn Profile</a></p>
-        <p><i class="fab fa-github"></i> GitHub: <a href="https://github.com/Amar-Nath9" target="_blank" style="color: #333;">GitHub Profile</a></p>
+    <section id="contact" class="position-relative section">
+        <div class="container text-center">
+            <h6 class="subtitle">Contact</h6>
+            <h6 class="section-title mb-4">Get In Touch With Me</h6>
+            <p class="mb-5 pb-4">Have a project in mind or need assistance with development? <br> Feel free to reach out, and let's discuss how we can work together to bring your vision to reality!</p>
+
+            <div class="contact text-left">
+                <div class="form">
+                    <h6 class="subtitle">Available 24/7</h6>
+                    <h6 class="section-title mb-4">Get In Touch</h6>
+                    <form>
+                        <div class="form-group">
+                            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Subject" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea name="contact-message" id="" cols="30" rows="5" class="form-control" placeholder="Message"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block rounded w-lg">Send Message</button>
+                    </form>
+                </div>
+                <div class="contact-infos">
+                    <div class="item">
+                        <i class="ti-location-pin"></i>
+                        <div class="">
+                            <h5>Location</h5>
+                            <p> Visakhapatnam, Andhra Pradesh</p>
+                        </div>                          
+                    </div>
+                    <div class="item">
+                        <i class="ti-mobile"></i>
+                        <div>
+                            <h5>Phone Number</h5>
+                            <p>9347744891</p>
+                        </div>                          
+                    </div>
+                    <div class="item">
+                        <i class="ti-email"></i>
+                        <div class="mb-0">
+                            <h5>Email Address</h5>
+                            <p>shivaamarnath9@gmail.com</p>
+                        </div>
+                    </div>
+                </div>                  
+            </div>
+        </div>  
+         
     </section>
+    <!-- End of Contact Section -->
 
-    <!-- Footer -->
-    <footer class="text-center">
-        <p>© 2024 Saragada Shiva Amar Nath Reddy | All Rights Reserved.</p>
-    </footer>
+    
+	<!-- core  -->
+    <script src="assets/vendors/jquery/jquery-3.4.1.js"></script>
+    <script src="assets/vendors/bootstrap/bootstrap.bundle.js"></script>
+    <!-- bootstrap 3 affix -->
+	<script src="assets/vendors/bootstrap/bootstrap.affix.js"></script>
 
-{% endblock content %}
+    <!-- steller js -->
+    <script src="assets/js/steller.js"></script>
+
+</body>
+</html>

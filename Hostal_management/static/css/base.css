@@ -1,48 +1,221 @@
 body, html {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-  }
-  
-  main {
-    padding-top: 0;
-  }
-  
-  /* Image section with cropping */
-  .image-section {
-    text-align: center;
-    margin: 0;
-    padding: 0;
-    height: 100vh; /* Full viewport height */
-    overflow: hidden; /* Hide overflow from cropping */
-  }
-  
-  .image-section img {
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    object-fit: cover; /* Crop the image to fit */
-    object-position: center; /* Center the image to balance top and bottom cropping */
-    display: block;
-  }
-  
-  .navbar {
-    background-color: transparent !important;
-    position: absolute;
-    top: 0;
-    width: 100%;
-    z-index: 1000;
-    transition: background-color 0.3s ease;
-  }
-  
-  .navbar.scrolled {
-    background-color: rgba(0, 0, 0, 0.7);
-  }
-  
-  .navbar-brand, .nav-link {
-    color: #ffffff !important;
-  }
-  
-  .nav-link:hover {
-    color: #A8DADC !important;
-  }
-  
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+main {
+  padding-top: 0;
+}
+
+/* Transparent Header */
+.navbar {
+  background-color: transparent !important;
+}
+
+.navbar.scrolled {
+  background-color: rgba(0, 0, 0, 0.7) !important;
+}
+
+/* Image section with cropping */
+.image-section {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+.image-section img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 1;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding-left: 5%;
+  color: #fff;
+  z-index: 2;
+}
+
+.text-content {
+  max-width: 50%; /* Restricts the width to 50% of the screen */
+}
+
+.text-content h1 {
+  font-size: 4.5rem;
+  font-weight: bold;
+  color: #F1FAEE;
+}
+
+.text-content .quote {
+  font-size: 1.8rem;
+  color: #A8DADC;
+}
+
+.buttons .btn {
+  padding: 12px 30px;
+  font-size: 1.2rem;
+  border-radius: 30px;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.buttons .btn-register {
+  background-color: #8BC34A;
+  color: #FFFFFF;
+}
+
+.buttons .btn-register:hover {
+  background-color: #7BBE3D; /* Darker green on hover */
+  transform: scale(1.05);
+}
+
+.buttons .btn-about {
+  background-color: #FFFFFF;
+  color: #000000;
+  border: 2px solid #000000;
+}
+
+.buttons .btn-about:hover {
+  background-color: #F1FAEE; /* Light background on hover */
+  transform: scale(1.05);
+}
+
+/* About Us Section */
+.about-section {
+  background-color: #f5f5dc; /* Background color */
+  padding-top: 20px; /* Optional: Add some padding */
+  padding-bottom: 20px;
+  border-radius: 10px; /* Optional: Add rounded corners */
+}
+
+
+.about-title {
+  font-family: 'Qwitcher Grypen', cursive;
+  font-size: 7rem;
+  color: #81AC17;
+}
+
+/* Center and restrict width of the About Us paragraph */
+.about-paragraph {
+  font-size: 1.25rem;
+  color: #000000; ;
+  max-width: 950px; /* Restrict width */
+  margin: 0 auto; /* Center the paragraph */
+  padding-bottom: 40px; /* Increased bottom padding */
+}
+
+/* Image Cards Section */
+.image-gallery {
+  display: flex;
+  padding-top: 40px;
+  justify-content: center;
+  gap: 20px;
+}
+
+.image-gallery .card {
+  width: 30%;
+  height: auto;
+}
+
+.image-gallery .card-img {
+  width: 100%;
+  height: 350px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* Amenities Block */
+.amenities-block {
+  background-color: #f5f5dc;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.amenities-block div {
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+}
+
+.amenities-block i {
+  margin-right: 10px;
+  color: #81AC17;
+}
+
+/* Manager Section */
+#manager {
+  background-color: #f4f4f4;
+}
+
+/* Manager Name Styling */
+.manager-name {
+  color: #246F06; /* Change to the specified color */
+  font-weight: bold; /* Make the name bold */
+  font-size: 2rem; /* Increase font size */
+ 
+  margin-top: 10px; /* Add some space above the name */
+}
+
+
+.manager-img {
+  flex: 1;
+}
+
+.manager-details {
+  flex: 2;
+  color: #000000;
+  font-size: 1.25rem;
+  padding-left: 40px;
+}
+
+footer {
+  background-color: #000;
+  color: #fff;
+  padding: 20px;
+}
+
+
+/* Button Adjustments */
+.buttons .btn {
+  padding: 12px 30px;
+  font-size: 1.2rem;
+  border-radius: 30px;
+  transition: background-color 0.3s, transform 0.3s;
+  margin-top: 20px; /* Added margin to move buttons slightly down */
+}
+
+/* footer */
+footer {
+  background-color: #333; /* Dark background for contrast */
+  color: #fff; /* White text color */
+  padding: 20px 0; /* Add some padding for spacing */
+}
+
+footer h5 {
+  font-weight: bold; /* Make headings bold */
+  margin-bottom: 10px; /* Space below headings */
+}
+
+footer p {
+  margin: 5px 0; /* Space between paragraphs */
+}
+
+footer a {
+  text-decoration: none; /* Remove underline from links */
+}
+
+footer a:hover {
+  text-decoration: underline; /* Add underline on hover */
+}

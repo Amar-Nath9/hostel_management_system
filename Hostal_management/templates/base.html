@@ -6,7 +6,10 @@
   <title>{% block title %}Home{% endblock %}</title>
   {% load static %}
   <link rel="icon" href="{% static 'logotitle.png' %}" type="image/icon type">
+
+  <!-- Fonts and Icons -->
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Qwitcher+Grypen&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
   
@@ -15,23 +18,21 @@
 </head>
 <body>
   <header>
-    <!-- navbar -->
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary navbar-light fixed-top" style="background-color: transparent;">
       <div class="container-fluid d-flex align-items-center">
         <a class="navbar-brand" href="{% url 'dashboard' %}">
           <img src="{% static 'logotitle.png' %}" alt="Reddy's Hostel Logo" style="width: 125px; height: auto;">
         </a>
-        <a class="nav-link active" aria-current="page" href="{% url 'amar_profile' %}">Developer Profile</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse justify-content-end d-flex align-items-center" id="navbarSupportedContent">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a href="{% url 'register' %}" class="btn btn-custom me-2" role="button">Registration</a>
+              <a href="{% url 'management_login' %}" class="btn btn-outline-light me-2" role="button">Admin</a>
             </li>
             <li class="nav-item">
-              <a href="{% url 'login' %}" class="btn btn-custom" role="button">Login</a>
+              <a href="{% url 'login' %}" class="btn btn-light" role="button">Login</a>
             </li>
           </ul>
         </div>
@@ -42,24 +43,97 @@
   {% block content %}
   <main>
     <div class="image-section">
-      <img src="{% static 'image/1.jpg' %}" alt="Descriptive Alt Text" class="img-fluid"> <!-- Replace with your image path -->
+      <img src="{% static 'image/1.jpg' %}" alt="background image" class="img-fluid">
+      <div class="overlay">
+        <div class="text-content">
+          <h1 class="main-title">Try not to feel like home.!</h1>
+          <p class="quote">"The secret to happy living is balancing the joy of learning and the art of relaxing."</p>
+          <div class="buttons">
+            <a href="{% url 'register' %}" class="btn btn-register">Register</a>
+            <a href="{% url 'amar_profile' %}" class="btn btn-about">About Developer</a>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="content-section">
-      <p>{% lorem 100 b random %}</p>
-    </div>
-  </main>
-  {% endblock content %}
 
-  <script>
-    window.onscroll = function() {
-      var navbar = document.querySelector('.navbar');
-      if (window.pageYOffset > 50) {
-        navbar.classList.add('scrolled');
-      } else {
-        navbar.classList.remove('scrolled');
-      }
-    };
-  </script>
+    <!-- About Us Section -->
+    <section id="about-us" class="text-center py-5">
+      <h1 class="about-title">About Us</h1>
+      <div class="about-section"> 
+      <p class="about-paragraph">
+        Welcome to Reddy's Hostel, where comfort meets convenience. We believe in providing a home away from home for students and working professionals. With top-notch amenities, a serene environment, and dedicated staff, we strive to make your stay not only comfortable but also memorable. Our hostel fosters a sense of community, and we ensure that all your needs are met with the utmost care and attention. Experience the perfect blend of modern facilities and a warm atmosphere at Reddy's Hostel.
+      </p>
+      </div>
+
+      <!-- Image Cards Section -->
+      <div class="image-gallery">
+        <div class="card">
+          <img src="{% static 'image/g1.jpg' %}" alt="image 1" class="card-img">
+        </div>
+        <div class="card">
+          <img src="{% static 'image/g2.jpg' %}" alt="image 2" class="card-img">
+        </div>
+        <div class="card">
+          <img src="{% static 'image/g3.jpg' %}" alt="image 3" class="card-img">
+        </div>
+      </div>
+    </section>
+
+    <!-- Amenities Block -->
+<div class="amenities-block py-4">
+  <div class="d-flex justify-content-center align-items-center gap-5">
+    <div><i class="fas fa-wifi"></i> Wi-Fi Available</div>
+    <div><i class="fas fa-tshirt"></i> Washing Machine Available</div> <!-- Changed icon here -->
+    <div><i class="fas fa-bed"></i> Beds Available</div>
+    <div><i class="fas fa-utensils"></i> Mess Available</div>
+    <div><i class="fas fa-bolt"></i> Electricity Included</div>
+  </div>
+</div>
+
+<!-- Manager Section -->
+<section id="manager" class="d-flex align-items-center py-5">
+  <div class="container d-flex">
+    <div class="manager-img me-4">
+      <img src="{% static 'image/manager.jpg' %}" alt="Manager Image" class="img-fluid">
+      
+    </div>
+    <div class="manager-details">
+      <h1 class="about-title">Manager</h1>
+      <h4 class="manager-name">Mr. Saragada Appala Reddy</h4> 
+      <p>With 26 years of distinguished service in the Indian Army, our manager brings a wealth of experience, leadership, and discipline to our hostel. After retiring from the military, they have successfully transitioned into civilian roles, leveraging their skills to excel as a facility manager for the past 3 years in private companies. Their expertise in operations management, coupled with a strong focus on maintaining safety, efficiency, and comfort, ensures that every aspect of the hostel runs smoothly. Committed to providing a secure and welcoming environment, they lead our team with the same dedication and integrity that defined their military career.</p>
+    </div>
+  </div>
+</section>
+  </main>
+
+<!-- Footer -->
+<footer class="text-center py-4" style="background-color: #333; color: #fff;">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 text-start">
+        <h5>CONTACT US</h5>
+        <p>Reddy's Hostel</p>
+        <p>Monday – Sunday | 9 AM – 5 PM</p>
+        <p>Mobile: +91 9871761154</p>
+        <p>Email: <a href="mailto:shivaamarnath9@gmail.com" style="color: #fff;">shivaamarnath9@gmail.com</a></p>
+      </div>
+      <div class="col-md-6 text-end">
+        <h5>ADDRESS</h5>
+        <p>8-57-127/2, Adarsh Nagar, Gollaveedi,</p>
+        <p>Chittivalasa, Tagarapuvalasa,</p>
+        <p>Visakhapatnam, Andhra Pradesh.</p>
+        <p>531162</p>
+      </div>
+    </div>
+    <p class="mt-4">&copy; 2024 Reddy's Hostel. All rights reserved.</p>
+  </div>
+</footer>
+
+
+
+
+  {% endblock content %}
+  
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 </body>
 </html>
