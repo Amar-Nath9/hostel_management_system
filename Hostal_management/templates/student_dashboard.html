@@ -18,7 +18,7 @@
           min-width: 300px;
           width: auto; /* Allows for automatic width adjustment */
       }
-  </style>
+    </style>
 </head>
 <body>
     {% if messages %}
@@ -102,21 +102,22 @@
                             </div>
                             <hr>
                             <div class="row">
-                                <div class="col-sm-3"><p class="mb-0">Total Amount Paid</p></div>
+                                <div class="col-sm-3"><p class="mb-0">Total Amount Paid (This Month)</p></div>
                                 <div class="col-sm-9"><p class="text-muted mb-0">{{ total_paid }}</p></div>
                             </div>
                             <hr>
                             <div class="row">
-                                <div class="col-sm-3"><p class="mb-0">Remaining Balance</p></div>
+                                <div class="col-sm-3"><p class="mb-0">Remaining Balance (This Month)</p></div>
                                 <div class="col-sm-9"><p class="text-muted mb-0">{{ remaining_balance }}</p></div>
                             </div>
+                            
                         </div>
                     </div>
                     
-                    <!-- Payment History and Form -->
-                    <div class="card mb-4">
+                   <!-- Current Month Payment History and Form -->
+                   <div class="card mb-4">
                         <div class="card-body">
-                            <h5 class="mb-3">Payment History</h5>
+                            <h5 class="mb-3">Current Month Payment History</h5>
                             <ul class="list-group mb-3">
                                 {% for payment in payments %}
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -129,7 +130,7 @@
                                     </li>
                                 {% endfor %}
                             </ul>
-                            
+    
                             <!-- Payment Form -->
                             <h5 class="mb-3">Make a Payment</h5>
                             <form method="POST" action="{% url 'upload_payment' %}" enctype="multipart/form-data">
@@ -139,6 +140,10 @@
                                     <input type="number" class="form-control" id="amount_paid" name="amount_paid" required>
                                 </div>
                                 <div class="mb-3">
+                                    <label for="payment_date" class="form-label">Payment Date</label>
+                                    <input type="date" class="form-control" id="payment_date" name="payment_date" required>
+                                </div>
+                                <div class="mb-3">
                                     <label for="payment_screenshot" class="form-label">Payment Screenshot</label>
                                     <input type="file" class="form-control" id="payment_screenshot" name="payment_screenshot" required>
                                 </div>
@@ -146,6 +151,28 @@
                             </form>
                         </div>
                     </div>
+
+                    <!-- Full Payment History Section -->
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="mb-3">All Payment History</h5>
+                            <ul class="list-group mb-3">
+                                {% for payment in all_payments %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        {{ payment.payment_date|date:"F Y" }} - Amount: {{ payment.amount_paid }}
+                                        {% if payment.is_approved %}
+                                            <span class="badge bg-success rounded-pill">Approved ✅</span>
+                                        {% else %}
+                                            <span class="badge bg-warning rounded-pill">Pending ❌</span>
+                                        {% endif %}
+                                    </li>
+                                {% empty %}
+                                    <li class="list-group-item">No payment history available.</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>

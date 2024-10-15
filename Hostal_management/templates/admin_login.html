@@ -3,13 +3,22 @@
 <html lang="en" >
 <head>
   <meta charset="UTF-8">
-  <title>CodePen - Glassmorphism Login</title>
+  <title>Admin-login</title>
   <link rel="stylesheet" href="{% static 'css/ad_login.css' %}">
+  <link rel="icon" href="{% static 'logotitle.png' %}" type="image/icon type">
 
 </head>
-<body>
+
 <!-- partial:index.partial.html -->
 <body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary navbar-light fixed-top" style="background-color: transparent;">
+        <div class="container-fluid d-flex align-items-center">
+          <a class="navbar-brand" href="{% url 'dashboard' %}">
+            <img src="{% static 'logotitle.png' %}" alt="Reddy's Hostel Logo" style="width: 125px; height: auto;">
+          </a>
+        </div>
+    </nav>
+
     <section class="container">
         <div class="login-container">
             <div class="circle circle-one"></div>
@@ -22,10 +31,7 @@
                     <input type="password" name = "password" placeholder="PASSWORD" />
                     <button class="opacity">SUBMIT</button>
                 </form>
-                <div class="register-forget opacity">
-                    <a href="">REGISTER</a>
-                    <a href="">FORGOT PASSWORD</a>
-                </div>
+                
             </div>
             <div class="circle circle-two"></div>
         </div>
@@ -33,7 +39,7 @@
     </section>
 </body>
 <!-- partial -->
-  <script  src="{% static 'js/ad_login.js' %}"></script>
+  {% comment %} <script  src="{% static 'js/ad_login.js' %}"></script> {% endcomment %}
 
-</body>
+
 </html>

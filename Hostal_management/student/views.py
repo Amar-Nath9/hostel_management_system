@@ -12,44 +12,34 @@ from collections import defaultdict
 from django.db.models.functions import TruncMonth
 from django.utils.timezone import now
 from django.db.models import Sum
+from datetime import datetime
+from django.utils.timezone import make_aware
 
 
-#register logic 
+# register logic 
 def register(request):
     if request.method == 'POST':
-        username = request.POST.get('mobile_no') # makeing the mobile number as username
+        username = request.POST.get('mobile_no')  # Making the mobile number as username
         user = User.objects.filter(username=username)
+        
         if user.exists():
-            messages.info(request,"User Already Exist! Try to Login")
+            messages.info(request, "User Already Exist! Try to Login")
             return redirect("login")
 
-
-        
         form = UserRegistrationForm(request.POST)
-        '''if form.is_valid():
-    form.save()
-    messages.success(request, 'Registration successful! Your account is pending approval.')
-    return redirect('login')
-else:
-    messages.error(request, 'Please correct the errors below.')
-    return render(request, 'register.html', {'form': form})
-'''
         
         if form.is_valid():
-        
             form.save()  # This will use set_password to hash the password
-             # Custom message for waiting for admin approval
+            
+            # Custom message for waiting for admin approval
             messages.success(request, 'Registration successful! Your account is pending approval.')
-            return redirect('login') 
-        # else:
-           
-        #     messages.error(request, 'Please correct the errors below.')
+            return redirect('login')
+        else:
+            messages.error(request, 'Please correct the errors below.')
     else:
-        
         form = UserRegistrationForm()
 
     return render(request, 'register.html', {'form': form})
-
 
 
 
@@ -59,12 +49,11 @@ else:
 #     return HttpResponse("<h1>Dash_Board_student</h1>")
 
 # student dash board after the loin 
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404
-from django.db.models import Sum
-from management.models import User_details
-from student.models import PaymentDetails
-
+# from django.contrib.auth.decorators import login_required
+# from django.shortcuts import render, get_object_or_404
+# from django.db.models import Sum
+# from management.models import User_details
+# from student.models import PaymentDetails
 @login_required(login_url="login")
 def student_dashboard(request):
     user_details = get_object_or_404(User_details, user=request.user)
@@ -72,25 +61,33 @@ def student_dashboard(request):
     # Reset remaining balance if needed
     user_details.reset_remaining_balance()
     
-    # Get all payments associated with the logged-in user
-    payments = PaymentDetails.objects.filter(user=request.user)
+    # Get the current month and year
+    current_month = now().month
+    current_year = now().year
     
-    # Calculate total amount paid based on PaymentDetails
-    total_paid = payments.aggregate(Sum('amount_paid'))['amount_paid__sum'] or 0
+    # Filter for payments in the current month
+    current_month_payments = PaymentDetails.objects.filter(
+        user=request.user,
+        payment_date__year=current_year,
+        payment_date__month=current_month
+    )
     
-    # Calculate remaining balance
-    remaining_balance = user_details.total_amount_due - total_paid
+    # Calculate total amount paid for the current month
+    total_paid_current_month = current_month_payments.aggregate(Sum('amount_paid'))['amount_paid__sum'] or 0
+    remaining_balance_current_month = user_details.total_amount_due - total_paid_current_month
     
-    # Update payment status based on remaining balance
-    user_details.update_payment_status()
-
+    # Retrieve all payment history for the user
+    all_payments = PaymentDetails.objects.filter(user=request.user).order_by('-payment_date')
+    
     # Context data to pass to the template
     context = {
         'user_details': user_details,
-        'payments': payments,
-        'total_paid': total_paid,  # Still keeping this for display purposes
-        'remaining_balance': remaining_balance,
+        'total_paid': total_paid_current_month,
+        'remaining_balance': remaining_balance_current_month,
+        'payments': current_month_payments,  # For current month history
+        'all_payments': all_payments,  # For all payment history
     }
+    
     return render(request, 'student_dashboard.html', context)
 
 # login_logic
@@ -162,43 +159,52 @@ def logout_page(request):
     logout(request)
     return redirect("dashboard")
 
-
 @login_required
 def upload_payment(request):
     if request.method == 'POST':
         user = request.user
         amount_paid = request.POST.get("amount_paid")
+        payment_date_str = request.POST.get("payment_date")
         payment_screenshot = request.FILES.get("payment_screenshot")
 
-        # Check if the student has already made a payment for the current month
-        current_month = now().month
-        current_year = now().year
-        existing_payment = PaymentDetails.objects.filter(
-            user=user,
-            payment_date__year=current_year,
-            payment_date__month=current_month
-        ).first()
+        # Parse the payment date from the form
+        try:
+            payment_date = datetime.strptime(payment_date_str, '%Y-%m-%d')
+            payment_date = make_aware(payment_date)  # Ensure date is timezone aware
 
-        if existing_payment:
-            messages.error(request, 'You have already made a payment for this month.')
-            return redirect('student_dashboard')
-
-        if amount_paid and payment_screenshot:
-            payment = PaymentDetails(
+            # Check if the student has already made a payment for the specified month
+            existing_payment = PaymentDetails.objects.filter(
                 user=user,
-                amount_paid=float(amount_paid),
-                payment_screenshot=payment_screenshot,
-                payment_date=now()
-            )
-            payment.save()
+                payment_date__year=payment_date.year,
+                payment_date__month=payment_date.month
+            ).first()
 
-            # Update payment status in User_details
-            user_details = get_object_or_404(User_details, user=user)
-            user_details.update_payment_status()  # Update payment status based on new payments
+            if existing_payment:
+                messages.error(request, 'You have already made a payment for this month.')
+                return redirect('student_dashboard')
 
-            messages.success(request, 'Payment details uploaded successfully!')
-            return redirect('student_dashboard')
-        else:
-            messages.error(request, 'Please fill out all fields and upload a screenshot.')
+            # Check if amount and screenshot are provided
+            if amount_paid and payment_screenshot:
+                payment = PaymentDetails(
+                    user=user,
+                    amount_paid=float(amount_paid),
+                    payment_screenshot=payment_screenshot,
+                    payment_date=payment_date  # Use specified date
+                )
+                payment.save()
+
+                # Update payment status in User_details
+                user_details = get_object_or_404(User_details, user=user)
+                user_details.update_payment_status()  # Update payment status based on new payments
+
+                messages.success(request, 'Payment details uploaded successfully!')
+                return redirect('student_dashboard')
+            else:
+                messages.error(request, 'Please fill out all fields and upload a screenshot.')
+
+        except ValueError:
+            messages.error(request, 'Invalid date format. Please use YYYY-MM-DD.')
+        except Exception as e:
+            messages.error(request, f'Error adding payment: {e}')
 
     return redirect('student_dashboard')
